@@ -1,5 +1,5 @@
 import React from 'react';
-import GifList from '../GifList';
+import GifList from '../components/GifList';
 
 class GifListContainer extends React.Component {
     state = {
@@ -7,14 +7,15 @@ class GifListContainer extends React.Component {
     }
 
     makeFetchCall() {
-        fetch(this.state.baseURL).then((resp) => resp.json())
+        fetch(`https://api.giphy.com/v1/gifs/search?q=${this.props.query}&api_key=GRtB3FOWQAqAC4JIuOVQf5RWQ7P8gCKC`).then((resp) => resp.json())
           .then((data) => {
-            this.getGifs(data.images);
+              console.log(data)
+            this.getGifs(data.data);
           }) 
     }
 
     getGifs(images) {
-        const newGifArray = images.map((image) => <GifList url = { image.url }/>)
+        const newGifArray = images.map((image, index) => <GifList key={index} url = { image.images.original.url }/>)
         this.setState({
             gifs: newGifArray
         })
@@ -22,18 +23,14 @@ class GifListContainer extends React.Component {
 
     componentDidUpdate(prevProps) {
           if (prevProps.query != this.props.query) {
-              console.log("AHHHHHHHH");
-            this.getGifs()
+            console.log(this.props.query, "it did update", prevProps.query)
+            this.makeFetchCall()
           }
     }
 
-    componentDidMount() {
-        this.setState({
-        baseURL: `https://api.giphy.com/v1/gifs/search?q=${this.props.query}&api_key=GRtB3FOWQAqAC4JIuOVQf5RWQ7P8gCKC`
-        })
-    }
+  
 
-      render() {
+    render() {
           return (
               <div>
                   {this.state.gifs}
