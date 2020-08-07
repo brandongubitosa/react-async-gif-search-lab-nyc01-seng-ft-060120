@@ -19,7 +19,7 @@ class GifSearch extends React.Component {
     render() {
         return (
             <form onSubmit = { this.handleSubmit }>
-                <input name = "query" value = { this.state.query } onChange = { this.handleChange } placeholder = "dolphins"/>
+                <input name = "query" value = { this.state.query } onChange = { this.handleChange } placeholder = "search"/>
                 <button type = "submit">Find Gif</button>
             </form>
         )
